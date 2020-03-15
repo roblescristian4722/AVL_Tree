@@ -7,11 +7,11 @@ int main()
 {
     AVLTree<int> tree;
     Vector<int> vec;
-    tree.insertData(50);
-    tree.insertData(20);
-    tree.insertData(18);
-    tree.insertData(19);
-    tree.insertData(60);
+    tree.insertData(12);
+    tree.insertData(23);
+    tree.insertData(34);
+    tree.insertData(25);
+    tree.insertData(26);
     tree.parseInOrder(vec);
     for (size_t i = 0; i < vec.size(); ++i)
         cout << vec[i] << endl;

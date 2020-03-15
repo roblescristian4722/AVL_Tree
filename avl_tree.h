@@ -149,7 +149,7 @@ void AVLTree<T>::doBalancing(AVLTreeNode*& node)
             if(balanceFactor(node->left) == -1)
                 simpleRightRotation(node);
             else
-                doubleLeftRotation(node);
+                doubleRightRotation(node);
         break;
     }
 }
@@ -181,12 +181,14 @@ void AVLTree<T>::simpleRightRotation(AVLTreeNode*& node)
 template<typename T>
 void AVLTree<T>::doubleLeftRotation(AVLTreeNode*& node)
 {
-    
+    simpleRightRotation(node->right);
+    simpleLeftRotation(node);
 }
 template<typename T>
 void AVLTree<T>::doubleRightRotation(AVLTreeNode*& node)
 {
-    
+    simpleLeftRotation(node->left);
+    simpleRightRotation(node);
 }
 
 
