@@ -9,7 +9,7 @@ using namespace std;
 template<typename T>
 class AVLTree
 {
-private:
+public:
     struct AVLTreeNode
     {
         T* dataPtr;
@@ -28,6 +28,30 @@ private:
             dataPtr = nullptr;
         }
     };
+
+    AVLTree() : m_root(nullptr) {}
+    ~AVLTree(){}
+
+    // MODIFY DATA
+    void insertData(const T& data);
+    void removeData(const T& data);
+
+    // PARSE
+    void parseInOrder(Vector<T> &vec);
+    void parsePreOrder(Vector<T> &vec);
+    void parsePostOrder(Vector<T> &vec);
+
+    // PROPERTIES
+    bool isLeaf();
+    bool isLeaf(AVLTreeNode*& node);
+    unsigned int height();
+
+    // GET AVL DATA
+    AVLTreeNode*& findData(const T& data);
+    AVLTreeNode*& lowestData();
+    AVLTreeNode*& highestData();
+
+private:
     AVLTreeNode* m_root;
 
     // MODIFY DATA
@@ -52,23 +76,10 @@ private:
     void doubleLeftRotation(AVLTreeNode*& node);
     void doubleRightRotation(AVLTreeNode*& node);
 
-public:
-    AVLTree() : m_root(nullptr) {}
-    ~AVLTree(){}
-
-    // MODIFY DATA
-    void insertData(const T& data);
-    void removeData(const T& data);
-
-    // PARSE
-    void parseInOrder(Vector<T> &vec);
-    void parsePreOrder(Vector<T> &vec);
-    void parsePostOrder(Vector<T> &vec);
-
-    // PROPERTIES
-    bool isLeaf();
-    bool isLeaf(AVLTreeNode*& node);
-    unsigned int height();
+    // GET AVL NODE
+    AVLTreeNode*& findData(AVLTreeNode*& node, const T& data);
+    AVLTreeNode*& lowestData(AVLTreeNode*& node);
+    AVLTreeNode*& highestData(AVLTreeNode*& node);
 };
 
 /*
@@ -80,7 +91,7 @@ void AVLTree<T>::insertData(const T& data, AVLTreeNode*& node)
     if (node == nullptr)
         node = new AVLTreeNode(data);
     else if (*(node->dataPtr) == data)
-        cout << "Data has already been inserted" << endl;
+        throw range_error("Data has already been inserted");
     else if (data < *(node->dataPtr))
         insertData(data, node->left);
     else
@@ -191,6 +202,36 @@ void AVLTree<T>::doubleRightRotation(AVLTreeNode*& node)
     simpleRightRotation(node);
 }
 
+template<typename T>
+typename AVLTree<T>::AVLTreeNode*& AVLTree<T>::findData(AVLTreeNode*& node, const T& data)
+{
+    if (node == nullptr || *(node->dataPtr) == data)
+        return node;
+    else
+    {
+        if (data < *(node->dataPtr))
+            findData(node->left, data);
+        else
+            findData(node->right, data);
+    }
+}
+
+template<typename T>
+typename AVLTree<T>::AVLTreeNode*& AVLTree<T>::lowestData(AVLTreeNode*& node)
+{
+    if (node == nullptr || node->left == nullptr)
+        return node;
+    return lowestData(node->left);
+}
+
+template<typename T>
+typename AVLTree<T>::AVLTreeNode*& AVLTree<T>::highestData(AVLTreeNode*& node)
+{
+    if (node == nullptr || node->right == nullptr)
+        return node;
+    return highestData(node->right);
+}
+
 
 /*
  * PUBLIC METHODS
@@ -237,6 +278,24 @@ template<typename T>
 unsigned int AVLTree<T>::height()
 {
     return height(m_root);
+}
+
+template<typename T>
+typename AVLTree<T>::AVLTreeNode*& AVLTree<T>::findData(const T& data)
+{
+    return findData(m_root, data);
+}
+
+template<typename T>
+typename AVLTree<T>::AVLTreeNode*& AVLTree<T>::lowestData()
+{
+    return lowestData(m_root);
+}
+
+template<typename T>
+typename AVLTree<T>::AVLTreeNode*& AVLTree<T>::highestData()
+{
+    return highestData(m_root);
 }
 
 #endif
