@@ -6,6 +6,7 @@ using namespace std;
 int main()
 {
     AVLTree<int> tree;
+    AVLTree<int>::AVLTreeNode* node;
     Vector<int> vec;
 
     tree.insertData(12);
@@ -14,7 +15,7 @@ int main()
     tree.insertData(25);
     tree.insertData(26);
 
-    tree.removeData(26);
+    tree.removeAll();
 
     tree.parseInOrder(vec);
 

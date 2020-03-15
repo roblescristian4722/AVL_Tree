@@ -36,6 +36,7 @@ public:
     void insertData(const T& data);
     void removeData(const T& data);
     void removeNode(AVLTreeNode*& node);
+    void removeAll();
 
     // PARSE
     void parseInOrder(Vector<T> &vec);
@@ -57,6 +58,7 @@ private:
 
     // MODIFY DATA
     void insertData(const T& data, AVLTreeNode*& node);
+    void removeAll(AVLTreeNode*& node);
 
     // PARSE
     void parsePreOrder(AVLTreeNode*& node, Vector<T> &vec);
@@ -232,10 +234,28 @@ typename AVLTree<T>::AVLTreeNode*& AVLTree<T>::highestData(AVLTreeNode*& node)
     return highestData(node->right);
 }
 
+template <typename T>
+void AVLTree<T>::removeAll(AVLTreeNode*& node)
+{
+    if (node != nullptr)
+    {
+        removeAll(node->left);
+        removeAll(node->right);
+        delete node;
+    }
+    node = nullptr;
+}
+
 
 /*
  * PUBLIC METHODS
 */
+template <typename T>
+void AVLTree<T>::removeAll()
+{
+    removeAll(m_root);
+}
+
 template<typename T>
 bool AVLTree<T>::isLeaf(AVLTreeNode*& node)
 {
