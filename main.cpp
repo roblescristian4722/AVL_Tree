@@ -6,8 +6,6 @@ using namespace std;
 int main()
 {
     AVLTree<int> tree;
-    AVLTree<int>::AVLTreeNode* lowest;
-    AVLTree<int>::AVLTreeNode* highest;
     Vector<int> vec;
 
     tree.insertData(12);
@@ -16,11 +14,7 @@ int main()
     tree.insertData(25);
     tree.insertData(26);
 
-    lowest = tree.lowestData();
-    highest = tree.highestData();
-
-    cout << "Mínimo: " << *(lowest->dataPtr) << endl
-         << "Máximo: " << *(highest->dataPtr) << endl;
+    tree.removeData(26);
 
     tree.parseInOrder(vec);
 

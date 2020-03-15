@@ -35,6 +35,7 @@ public:
     // MODIFY DATA
     void insertData(const T& data);
     void removeData(const T& data);
+    void removeNode(AVLTreeNode*& node);
 
     // PARSE
     void parseInOrder(Vector<T> &vec);
@@ -56,7 +57,6 @@ private:
 
     // MODIFY DATA
     void insertData(const T& data, AVLTreeNode*& node);
-    void removeData(const T& data, AVLTreeNode*& node);
 
     // PARSE
     void parsePreOrder(AVLTreeNode*& node, Vector<T> &vec);
@@ -79,7 +79,7 @@ private:
     // GET AVL NODE
     AVLTreeNode*& findData(AVLTreeNode*& node, const T& data);
     AVLTreeNode*& lowestData(AVLTreeNode*& node);
-    AVLTreeNode*& highestData(AVLTreeNode*& node);
+    AVLTreeNode*& highestData(AVLTreeNode*& node);    
 };
 
 /*
@@ -296,6 +296,31 @@ template<typename T>
 typename AVLTree<T>::AVLTreeNode*& AVLTree<T>::highestData()
 {
     return highestData(m_root);
+}
+
+template<typename T>
+void AVLTree<T>::removeData(const T& data)
+{
+    AVLTreeNode* aux = findData(data);
+    removeNode(aux);
+}
+
+template<typename T>
+void AVLTree<T>::removeNode(AVLTreeNode*& node)
+{
+    if (node == nullptr)
+        throw range_error("Data doesn't exist");
+    else if (isLeaf(node))
+    {
+        delete node;
+        node = nullptr;
+    }
+    else
+    {
+        AVLTreeNode*& aux = node->left == nullptr ? lowestData(node->right) : highestData(node->left);
+        *(node->dataPtr) = *(aux->dataPtr);
+        removeNode(aux);
+    }
 }
 
 #endif
