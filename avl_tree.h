@@ -212,9 +212,9 @@ typename AVLTree<T>::AVLTreeNode*& AVLTree<T>::findData(AVLTreeNode*& node, cons
     else
     {
         if (data < *(node->dataPtr))
-            findData(node->left, data);
+            return findData(node->left, data);
         else
-            findData(node->right, data);
+            return findData(node->right, data);
     }
 }
 
